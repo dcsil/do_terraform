@@ -3,15 +3,18 @@ CLUSTER_NAME=dcsil-cluster
 echo '==== Fetching K8s cluster config with doctl'
 doctl kubernetes cluster kubeconfig save $CLUSTER_NAME
 
+echo '==== Creating DCSIL namespace'
+kubectl create namespace dcsil
+
 echo '\n==== Fetching Nodes from K8s with kubectl'
-kubectl get nodes
+kubectl -n dcsil get nodes
 
 echo '\n==== Launching nginx on Kubernetes'
-kubectl apply -f k8s/nginx.yml
+kubectl -n dcsil apply -f k8s/nginx.yml
 
 echo '\n==== Launching a load balancer on Kubernetes'
 start_time=$(date +%s) # Start time is actually just before the apply
-kubectl apply -f k8s/loadbalancer.yml
+kubectl -n dcsil apply -f k8s/loadbalancer.yml
 
 clocks=( 🕐 🕜 🕑 🕝 🕒 🕞 🕓 🕟 🕔 🕠 🕕 🕡 🕖 🕢 🕗 🕣 🕘 🕤 🕙 🕥 🕚 🕦 🕛 🕧 )
 iteration=0
@@ -36,4 +39,4 @@ do
   fi
 done
 echo "**** Load balancer is public at http://$ip_address ****"
-kubectl describe service nginx
+kubectl -n dcsil describe service nginx
