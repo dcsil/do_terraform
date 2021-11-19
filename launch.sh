@@ -20,10 +20,10 @@ clocks=( 🕐 🕜 🕑 🕝 🕒 🕞 🕓 🕟 🕔 🕠 🕕 🕡 🕖 🕢 �
 iteration=0
 echo '\n==== Waiting for load balancer to be public. This could take a while'
 echo "==== ${clocks[0]} Elapsed time: -"
-ip_address="$(kubectl get services | grep '^nginx*' | awk '{ print $(NF-2) }')"
+ip_address="$(kubectl -n dcsil get services | grep '^nginx*' | awk '{ print $(NF-2) }')"
 while [ $ip_address == '<pending>' ]
 do
-  ip_address="$(kubectl get services | grep '^nginx*' | awk '{ print $(NF-2) }')"
+  ip_address="$(kubectl -n dcisl get services | grep '^nginx*' | awk '{ print $(NF-2) }')"
   printf '.'
 
   end_time=$(date +%s)
